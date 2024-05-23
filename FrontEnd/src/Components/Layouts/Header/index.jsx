@@ -1,6 +1,6 @@
 import { Button, Grid, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -8,6 +8,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { LogoutUser } from '../../../Api/apiRequest';
+import { toast } from 'react-toastify';
 
 export default function Header({ darkMode, toggleDarkMode }) {
     const location = useLocation();
@@ -30,6 +31,20 @@ export default function Header({ darkMode, toggleDarkMode }) {
     const handleLogout = () => {
         LogoutUser(id, dispatch, navigate, accessToken)
     }
+
+    const handleProfile = () => {
+        if (user) {
+            navigate('/profile')
+        } else {
+            toast.warn('Bạn cần đăng nhập trước')
+        }
+    }
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/')
+        }
+    }, [user])
 
 
     return (
@@ -83,7 +98,7 @@ export default function Header({ darkMode, toggleDarkMode }) {
                                                 ? 'white' : 'black'
                                     }
                                     : { ...styleMenuButtonMain, color: darkMode ? 'white' : 'black' }}
-                                onClick={() => navigate('/profile')}>
+                                onClick={handleProfile}>
                                 PROFILE
                             </Button>
                         </Grid>
