@@ -39,8 +39,6 @@ export default function UploadImg({ darkMode }) {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // alert('File uploaded successfully. Image URL: ' + response.data.imageURL);
       toast.success("Upload ảnh thành công")
     } catch (error) {
       console.error('Error uploading the file:', error);
