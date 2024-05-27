@@ -14,6 +14,23 @@ const FoldersController = {
         }
     },
     
+    // Lấy chi tiết thư mục
+    getFolderDetail: async (req, res) => {
+        const { userId, folderId } = req.params;
+
+        try {
+            const folder = await FoldersModel.findOne({ _id: folderId, user_id: userId });
+
+            if (!folder) {
+                return res.status(404).json({ message: 'Folder not found' });
+            }
+
+            res.status(200).json(folder);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching folder detail', error });
+        }
+    },
+    
     // Tạo thư mục
     createFolder: async (req, res) => {
         const { userId } = req.params;

@@ -18,6 +18,11 @@ const imageSchema = new mongoose.Schema({
         ref: 'Folder',
         required: true
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     uploadedAt: {
         type: Date,
         default: Date.now,

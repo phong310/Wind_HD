@@ -34,7 +34,7 @@ export default function UploadImg({ darkMode }) {
     formData.append('description', 'okokokoko');
 
     try {
-      const response = await axios.post('http://localhost:8080/upload/664c5614f35573ea5112ad8d', formData, {
+      const response = await axios.post('http://localhost:8080/upload/6648336769ea6e56c52c5355/6650451ccc9f25f33f6bbff7', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
