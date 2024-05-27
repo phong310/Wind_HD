@@ -1,0 +1,10 @@
+.icon-container {
+  position: absolute;
+  opacity: 0;
+  top: -24%;
+  transition: opacity 0.5s ease;
+}
+
+.grid_container:hover .icon-container {
+  opacity: 1;
+}

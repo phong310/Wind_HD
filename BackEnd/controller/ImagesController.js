@@ -2,9 +2,43 @@ const ImageModel = require('../models/ImagesModel');
 const cloudinary = require('cloudinary').v2;
 
 const ImagesController = {
+
+    getAllUserImages: async (req, res) => {
+        const { userId } = req.params;
+
+        try {
+            const images = await ImageModel.find({ userId });
+
+            if (!images || images.length === 0) {
+                return res.status(404).json({ message: 'No images found for this user' });
+            }
+
+            res.status(200).json(images);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching images', error });
+        }
+    },
+    
+    getImagesInFolder: async (req, res) => {
+        const { folderId } = req.params;
+
+        try {
+            const images = await ImageModel.find({ folder: folderId });
+
+            if (!images) {
+                return res.status(404).json({ message: 'No images found in this folder' });
+            }
+
+            res.status(200).json(images);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching images', error });
+        }
+    },
+
     // Upload ảnh
     uploadImage: async (req, res) => {
         const { folderId } = req.params;
+        const { userId } = req.params;
 
         try {
             // Lưu thông tin ảnh vào MongoDB
@@ -12,7 +46,8 @@ const ImagesController = {
                 title: req.body.title,
                 description: req.body.description,
                 url: req.file.path,
-                folder: folderId
+                folder: folderId,
+                userId: userId
             });
 
             await newImage.save();

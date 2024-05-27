@@ -49,7 +49,7 @@ export default function LayoutMain({ toggleDarkMode, darkMode }) {
                 <Route path='/profile' element={<Profile darkMode={darkMode} />} />
                 <Route path='/login' element={<Login darkMode={darkMode} />} />
                 <Route path='/register' element={<Register darkMode={darkMode} />} />
-                <Route path='/folder' element={<FolderDetail darkMode={darkMode} />} />
+                <Route path='/folder/:id' element={<FolderDetail darkMode={darkMode} />} />
             </Routes>
             {showBackToTop && (
                 <Box sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 999 }}>
