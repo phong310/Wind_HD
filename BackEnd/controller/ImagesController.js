@@ -18,7 +18,7 @@ const ImagesController = {
             res.status(500).json({ message: 'Error fetching images', error });
         }
     },
-    
+
     getImagesInFolder: async (req, res) => {
         const { folderId } = req.params;
 
@@ -46,7 +46,7 @@ const ImagesController = {
                 title: req.body.title,
                 description: req.body.description,
                 url: req.file.path,
-                folder: folderId,
+                folder: folderId || null,
                 userId: userId
             });
 
@@ -55,6 +55,27 @@ const ImagesController = {
             res.status(201).json(newImage);
         } catch (error) {
             res.status(500).json({ message: 'Error uploading image', error });
+        }
+    },
+
+    // Chuyển folder
+    moveImage: async (req, res) => {
+        const { imageId, folderId } = req.body;
+
+        try {
+            // Tìm ảnh trong MongoDB
+            const image = await ImageModel.findById(imageId);
+            if (!image) {
+                return res.status(404).json({ message: 'Image not found' });
+            }
+
+            // Cập nhật folder của ảnh
+            image.folder = folderId;
+            await image.save();
+
+            res.status(200).json({ message: 'Image moved successfully', image });
+        } catch (error) {
+            res.status(500).json({ message: 'Error moving image', error });
         }
     },
 

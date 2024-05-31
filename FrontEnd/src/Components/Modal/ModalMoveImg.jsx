@@ -1,42 +1,62 @@
+
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import { AppBar, Box, Button, Dialog, DialogContent, Grid, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Dialog, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Toolbar, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, isImg, setIsImg, getImgFolder }) {
+
+export default function ModalMoveImg({ open, setOpen, getImgFolder, imgId }) {
+    const { id } = useParams();
     const baseURL = import.meta.env.VITE_API_LOCAL;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
+    const [folders, setFolders] = useState()
+    const [folderIdNew, setFolderIdNew] = useState()
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleClose = () => {
-        setOpen(false)
-        setIsImg(false)
+    const getAllFolders = async () => {
+        try {
+            const res = await axios.get(`${baseURL}folder/${userId}`)
+            setFolders(res.data);
+        } catch (e) {
+            console.log('Err: ', e);
+        }
     }
 
-    const handleDelete = async (e) => {
+    const handleMoveImg = async (e) => {
         e.preventDefault();
         setIsLoading(true)
         try {
-            const res =
-                imgId && isImg
-                    ? await axios.delete(`${baseURL}upload/img/${imgId}`)
-                    : await axios.delete(`${baseURL}folder/${userId}/${folderId}`)
-            toast.success('Delete success')
-            setIsLoading(false)
+            const newItem = {
+                imageId: imgId,
+                folderId: folderIdNew
+            }
+            const res = await axios.put(`${baseURL}upload/moveImage`, newItem)
             setOpen(false)
-            setIsImg(false)
-            getAll()
-            imgId && isImg && getImgFolder()
+            setIsLoading(false)
+            getImgFolder()
+            toast.success("Moved photos to folder successfully")
+
         } catch (e) {
             console.log('Err:', e);
+            toast.warn("Failed !")
             setIsLoading(false)
-            toast.warn('Failed!')
         }
     }
+
+    const handleClose = () => {
+        setOpen(false)
+    };
+
+    useEffect(() => {
+        if (open) {
+            getAllFolders()
+        }
+    }, [open])
 
     return (
         <>
@@ -44,7 +64,7 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                 <AppBar sx={{ position: 'relative', bgcolor: '#B6B4B4', color: 'black' }}>
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ ...styleTextTitle }}>
-                            Delete
+                            Folder
                         </Typography>
                         <IconButton
                             edge="end"
@@ -64,7 +84,26 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                         noValidate
                         autoComplete="off"
                     >
-                        <Typography sx={{ fontWeight: 'bold' }}>Are you sure you want to delete this {imgId && isImg ? 'image' : 'folder'} ?</Typography>
+                        <FormControl>
+                            <FormLabel>Choose folder ?</FormLabel>
+                            <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue={id}
+                                name="radio-buttons-group"
+                                onChange={(e) => setFolderIdNew(e.target.value)}
+                            >
+                                {folders?.map((item, idx) => {
+                                    return (
+                                        <FormControlLabel
+                                            value={item._id}
+                                            key={idx}
+                                            control={<Radio color="default" />}
+                                            label={item.name}
+                                        />
+                                    )
+                                })}
+                            </RadioGroup>
+                        </FormControl>
                     </Box>
                 </DialogContent>
                 <Box
@@ -74,11 +113,13 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                     autoComplete="off"
                 >
                     <Grid container spacing={2} justifyContent={'center'} sx={{ gap: 1 }} >
-                        <Button variant="outlined" color='inherit' onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <LoadingButton loading={isLoading} type="submit" variant="contained" sx={{ ...styleBtnAdd }} onClick={handleDelete}>
-                            Delete
+                        <LoadingButton
+                            loading={isLoading}
+                            type="submit"
+                            variant="contained"
+                            sx={{ ...styleBtnAdd }}
+                            onClick={handleMoveImg}>
+                            Move
                         </LoadingButton>
                     </Grid>
 
@@ -116,6 +157,7 @@ const styleBoxContainer = {
         backgroundColor: '#F0F0F0'
     },
     mb: 4,
+    minWidth: 400,
 }
 
 const styleBtnAdd = {

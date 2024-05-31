@@ -1,41 +1,34 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { AppBar, Box, Button, Dialog, DialogContent, Grid, IconButton, Toolbar, Typography } from '@mui/material';
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import ModalMoveImg from './ModalMoveImg';
+import ModalDelete from './ModalDelete';
 
-export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, isImg, setIsImg, getImgFolder }) {
+export default function ModalFolder({ open, setOpen, imgId, getAll, getImgFolder }) {
     const baseURL = import.meta.env.VITE_API_LOCAL;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
-    const [isLoading, setIsLoading] = useState(false)
+    const [openChooseFolder, setOpenChooseFolder] = useState(false)
+    const [openModalDel, setOpenModalDel] = useState(false)
+    const [isImg, setIsImg] = useState(false)
 
     const handleClose = () => {
         setOpen(false)
-        setIsImg(false)
+    };
+
+    const handleChooseFolder = (e) => {
+        e.preventDefault();
+        setOpen(false)
+        setOpenChooseFolder(true)
     }
 
-    const handleDelete = async (e) => {
-        e.preventDefault();
-        setIsLoading(true)
-        try {
-            const res =
-                imgId && isImg
-                    ? await axios.delete(`${baseURL}upload/img/${imgId}`)
-                    : await axios.delete(`${baseURL}folder/${userId}/${folderId}`)
-            toast.success('Delete success')
-            setIsLoading(false)
-            setOpen(false)
-            setIsImg(false)
-            getAll()
-            imgId && isImg && getImgFolder()
-        } catch (e) {
-            console.log('Err:', e);
-            setIsLoading(false)
-            toast.warn('Failed!')
-        }
+    const openModalDelete = (e) => {
+        e.preventDefault()
+        setOpenModalDel(true)
+        setIsImg(true)
+        setOpen(false)
     }
 
     return (
@@ -44,7 +37,7 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                 <AppBar sx={{ position: 'relative', bgcolor: '#B6B4B4', color: 'black' }}>
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ ...styleTextTitle }}>
-                            Delete
+                            Option
                         </Typography>
                         <IconButton
                             edge="end"
@@ -64,7 +57,9 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                         noValidate
                         autoComplete="off"
                     >
-                        <Typography sx={{ fontWeight: 'bold' }}>Are you sure you want to delete this {imgId && isImg ? 'image' : 'folder'} ?</Typography>
+                        <Typography variant='h5'>
+                            What action do you want to perform ?
+                        </Typography>
                     </Box>
                 </DialogContent>
                 <Box
@@ -74,16 +69,35 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
                     autoComplete="off"
                 >
                     <Grid container spacing={2} justifyContent={'center'} sx={{ gap: 1 }} >
-                        <Button variant="outlined" color='inherit' onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <LoadingButton loading={isLoading} type="submit" variant="contained" sx={{ ...styleBtnAdd }} onClick={handleDelete}>
+                        <Button variant="outlined" color='inherit' onClick={openModalDelete}>
                             Delete
+                        </Button>
+                        <LoadingButton
+                            type="submit"
+                            variant="contained"
+                            sx={{ ...styleBtnAdd }}
+                            onClick={handleChooseFolder}>
+                            Move
                         </LoadingButton>
                     </Grid>
 
                 </Box>
             </Dialog>
+            <ModalMoveImg
+                open={openChooseFolder}
+                setOpen={setOpenChooseFolder}
+                imgId={imgId}
+                getImgFolder={getImgFolder}
+            />
+            <ModalDelete
+                open={openModalDel}
+                setOpen={setOpenModalDel}
+                imgId={imgId}
+                isImg={isImg}
+                setIsImg={setIsImg}
+                getAll={getAll}
+                getImgFolder={getImgFolder}
+            />
         </>
     )
 }
