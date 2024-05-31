@@ -8,6 +8,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import '../CSS/FolderDetail.css';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ModalFolder from '../Modal/ModalFolder';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import ModalUploadFolder from '../Modal/ModalUploadFolder';
 
 
 export default function FolderDetail({ darkMode }) {
@@ -16,9 +19,13 @@ export default function FolderDetail({ darkMode }) {
     const baseURL = import.meta.env.VITE_API_LOCAL;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
+    const [folderId, setFolderId] = useState()
     const [nameFolder, setNameFolder] = useState()
     const [imgFolder, setImgFolder] = useState()
     const [imgAll, setImgAll] = useState()
+    const [openModalOp, setOpenModalOp] = useState(false)
+    const [openUploadFolder, setOpenUploadFolder] = useState(false)
+    const [ImgId, setImgId] = useState()
 
     const getAllImg = async () => {
         try {
@@ -33,6 +40,7 @@ export default function FolderDetail({ darkMode }) {
         try {
             const res = await axios.get(`${baseURL}folder/${userId}/${id}`)
             setNameFolder(res.data.name);
+            setFolderId(res.data._id);
 
         } catch (e) {
             console.log('Err:', e);
@@ -46,6 +54,19 @@ export default function FolderDetail({ darkMode }) {
 
         } catch (e) {
             console.log('Err:', e);
+        }
+    }
+
+    const openModalChooseFolder = (id) => {
+        setOpenModalOp(true)
+        setImgId(id)
+    }
+
+    const handleOpenUploadImg = () => {
+        if (id === 'all') {
+            navigate('/upload')
+        } else {
+            setOpenUploadFolder(true)
         }
     }
 
@@ -102,7 +123,7 @@ export default function FolderDetail({ darkMode }) {
                                         <div className="overlay"></div>
                                         <Grid className="icon-all" container justifyContent={'center'}>
                                             <Grid item>
-                                                <IconButton>
+                                                <IconButton onClick={() => openModalChooseFolder(item?._id)}>
                                                     <SettingsIcon />
                                                 </IconButton>
                                             </Grid>
@@ -115,6 +136,32 @@ export default function FolderDetail({ darkMode }) {
                     </ImageList>
                 </Grid> : <Typography variant='h4' sx={{ mt: 20, color: 'gray' }}>The folder is empty !</Typography>}
             </Grid>
+            <ModalFolder
+                open={openModalOp}
+                setOpen={setOpenModalOp}
+                imgId={ImgId}
+                getAll={getAllImg}
+                getImgFolder={getImgFolder}
+            />
+            <Box sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 999 }}>
+                <IconButton
+                    aria-label="back to top"
+                    sx={{ color: 'black', width: '48px', height: '48px' }}
+                    onClick={() => handleOpenUploadImg()}
+                >
+                    <FileUploadIcon sx={{
+                        width: '38px', height: '38px', color: darkMode
+                            ? 'white' : 'black'
+                    }} />
+                </IconButton>
+            </Box>
+            <ModalUploadFolder
+                open={openUploadFolder}
+                setOpen={setOpenUploadFolder}
+                darkMode={darkMode}
+                folderId={folderId}
+                getImgFolder={getImgFolder}
+            />
         </Box>
     )
 }
