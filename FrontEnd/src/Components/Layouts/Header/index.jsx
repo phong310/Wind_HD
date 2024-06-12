@@ -9,15 +9,19 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { LogoutUser } from '../../../Api/apiRequest';
 import { toast } from 'react-toastify';
+import { createAxios } from '../../interceptor';
+import { logOutSuccess } from '../../../redux/authSlice';
 
 export default function Header({ darkMode, toggleDarkMode }) {
     const location = useLocation();
     const user = useSelector((state) => state.auth.login?.currentUser)
-    const id = user?.user._id;
+    const id = user?.user?._id;
     const accessToken = user?.accessToken
+    const rfToken = user?.refreshToken
     const path = location.pathname
     const navigate = useNavigate()
     const dispatch = useDispatch();
+    let axiosJWT = createAxios(user, dispatch, logOutSuccess)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

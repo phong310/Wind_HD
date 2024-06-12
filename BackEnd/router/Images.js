@@ -14,4 +14,6 @@ router.delete('/img/:imageId', ImagesController.deleteImage);
 // chuyển ảnh
 router.put('/moveImage', ImagesController.moveImage);
 
+router.get('/search/:title/:folderId?', ImagesController.searchImagesByTitleInFolder);
+
 module.exports = router;

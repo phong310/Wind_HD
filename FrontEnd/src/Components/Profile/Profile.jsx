@@ -10,6 +10,8 @@ import "../CSS/Profile.css"
 import ModalDelete from '../Modal/ModalDelete';
 import ModalCommon from '../Modal/ModalCommon';
 import { Link } from 'react-router-dom';
+import ModalUpdateProfile from '../Modal/ModalUpdateProfile';
+
 
 export default function Profile({ darkMode }) {
     const baseURL = import.meta.env.VITE_API_LOCAL;
@@ -21,6 +23,7 @@ export default function Profile({ darkMode }) {
     const [folderId, setFolderId] = useState()
     const [itemData, setItemData] = useState()
     const [isEdit, setIsEdit] = useState(false)
+    const [openUpdatePrf, setOpenUpdatePrf] = useState()
 
     const getAllFolders = async () => {
         try {
@@ -51,13 +54,25 @@ export default function Profile({ darkMode }) {
         getAllFolders()
     }, [])
 
+
     return (
         <Box sx={{ mb: 60, pt: 13, }}>
             <Grid sx={{ position: 'relative' }}>
-                <img src='/astronout_purple.jpg' style={styleImgCover} />
-                <Box sx={styleAvatarContainer}>
-                    <img src='/avatar.jpg' alt='Avatar' style={styleAvatar} />
-                </Box>
+                <img src={user?.user.cover_img ? user?.user.cover_img : '/coverImg_default.jpg'} style={styleImgCover} />
+                <div className='div-container'>
+                    <Box sx={styleAvatarContainer}>
+                        <img src={user?.user.avatar ? user?.user.avatar : '/defaul_avatar.png'} alt='Avatar' style={styleAvatar} />
+                        <div className="overlay"></div>
+                        <Grid className="icon-all" container justifyContent={'center'}>
+                            <Grid item>
+                                <IconButton onClick={() => setOpenUpdatePrf(true)}>
+                                    <EditIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </div>
+
             </Grid>
             <Grid container justifyContent={'flex-end'} sx={{ p: 6 }}>
                 <Button
@@ -126,6 +141,12 @@ export default function Profile({ darkMode }) {
                 getAll={getAllFolders}
                 folderId={folderId}
             />
+
+            <ModalUpdateProfile 
+                open={openUpdatePrf} 
+                setOpen={setOpenUpdatePrf} 
+                darkMode={darkMode}
+            />
         </Box>
     )
 }
@@ -134,10 +155,11 @@ const styleImgCover = {
     width: '100%',
     height: 500,
     objectFit: 'cover',
-    position: 'relative'
+    position: 'relative',
 }
 
 const styleAvatarContainer = {
+    bgcolor: 'white',
     position: 'absolute',
     bottom: -110,
     left: '10%',

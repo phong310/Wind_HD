@@ -187,7 +187,7 @@ const styleUpload = {
 
 export const btnUpload = {
     borderRadius: 20,
-    mt:4,
+    mt: 4,
     background: '#B6B4B4',
     fontWeight: 600,
     color: '#000000',

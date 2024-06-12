@@ -108,7 +108,30 @@ const ImagesController = {
         } catch (error) {
             res.status(500).json({ message: 'Error deleting image', error });
         }
-    }
+    },
+
+    // Tìm kiếm
+    searchImagesByTitleInFolder: async (req, res) => {
+        const { folderId, title } = req.params;
+
+        try {
+            let images;
+            if (folderId) {
+                images = await ImageModel.find({ folder: folderId, title: { $regex: title, $options: 'i' } });
+            } else {
+                images = await ImageModel.find({ title: { $regex: title, $options: 'i' } });
+            }
+
+            if (!images || images.length === 0) {
+                return res.status(404).json({ message: 'No images found with this title' });
+            }
+
+            res.status(200).json(images);
+        } catch (error) {
+            res.status(500).json({ message: 'Error searching images', error });
+        }
+    },
+
 };
 
 module.exports = ImagesController;

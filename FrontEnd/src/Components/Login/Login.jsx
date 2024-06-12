@@ -45,7 +45,7 @@ export default function Login({ darkMode }) {
           <CssTextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </Grid>
         <Grid item sm={12}>
-          <PasswordFormControl fullWidth variant="outlined"  >
+          <PasswordFormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
               value={password}
