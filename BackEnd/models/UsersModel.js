@@ -6,13 +6,14 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     avatar: String,
+    cover_img: String,
     email: {
         type: String,
         required: true
     },
     folder_id: {
         type: Array,
-        require:false
+        require: false
     },
     password: {
         type: String,

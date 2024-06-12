@@ -11,6 +11,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ModalFolder from '../Modal/ModalFolder';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import ModalUploadFolder from '../Modal/ModalUploadFolder';
+import { toast } from 'react-toastify';
 
 
 export default function FolderDetail({ darkMode }) {
@@ -26,6 +27,7 @@ export default function FolderDetail({ darkMode }) {
     const [openModalOp, setOpenModalOp] = useState(false)
     const [openUploadFolder, setOpenUploadFolder] = useState(false)
     const [ImgId, setImgId] = useState()
+    const [filteredImages, setFilteredImages] = useState([]);
 
     const getAllImg = async () => {
         try {
@@ -70,7 +72,23 @@ export default function FolderDetail({ darkMode }) {
         }
     }
 
+
     const imagesToDisplay = id === 'all' ? imgAll : imgFolder;
+
+    const handleSearch = async (searchTerm) => {
+        if (searchTerm === '') {
+            setFilteredImages([]);
+            return;
+        }
+        try {
+            const res =
+                await axios.get(`${baseURL}upload/search/${searchTerm}/${id === 'all' ? '' : id}`);
+            setFilteredImages(res.data);
+        } catch (e) {
+            toast.warn("Not found !")
+            console.log('Err:', e);
+        }
+    };
 
     useEffect(() => {
         if (id != 'all') {
@@ -101,11 +119,14 @@ export default function FolderDetail({ darkMode }) {
                     <Divider sx={{ borderColor: darkMode ? 'white' : 'unset' }} />
                 </Grid>
             </Grid>
-            <SearchBar />
+            <SearchBar
+                onSearch={handleSearch}
+                isFetching={id != 'all' ? getImgFolder : getAllImg}
+            />
             <Grid container justifyContent={'center'}>
-                {imagesToDisplay?.length > 0 ? <Grid item>
+                {filteredImages?.length > 0 ? <Grid item>
                     <ImageList variant="masonry" cols={4} gap={8}>
-                        {imagesToDisplay?.map((item, idx) => (
+                        {filteredImages?.map((item, idx) => (
                             <ImageListItem key={idx} sx={{ ...styleImgZoom }}>
                                 <motion.div
                                     animate={{ x: 0 }}
@@ -134,7 +155,39 @@ export default function FolderDetail({ darkMode }) {
                             </ImageListItem>
                         ))}
                     </ImageList>
-                </Grid> : <Typography variant='h4' sx={{ mt: 20, color: 'gray' }}>The folder is empty !</Typography>}
+                </Grid> : imagesToDisplay?.length > 0 ?
+                    <Grid item>
+                        <ImageList variant="masonry" cols={4} gap={8}>
+                            {imagesToDisplay?.map((item, idx) => (
+                                <ImageListItem key={idx} sx={{ ...styleImgZoom }}>
+                                    <motion.div
+                                        animate={{ x: 0 }}
+                                        transition={{ type: 'tween', duration: 0.5 }}
+                                        whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+                                    // whileTap={{ scale: 0.6 }}
+                                    >
+                                        <div className='div-container'>
+                                            <img
+                                                srcSet={item.url}
+                                                src={item.url}
+                                                loading="lazy"
+                                                style={{ width: 400 }}
+                                            />
+                                            <div className="overlay"></div>
+                                            <Grid className="icon-all" container justifyContent={'center'}>
+                                                <Grid item>
+                                                    <IconButton onClick={() => openModalChooseFolder(item?._id)}>
+                                                        <SettingsIcon />
+                                                    </IconButton>
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+
+                                    </motion.div>
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </Grid> : <Typography variant='h4' sx={{ mt: 20, color: 'gray' }}>The folder is empty !</Typography>}
             </Grid>
             <ModalFolder
                 open={openModalOp}

@@ -8,7 +8,9 @@ export default function Footer({ darkMode }) {
   return (
     <Grid container alignItems={'center'} justifyContent={'space-between'} sx={{ p: 4 }}>
       <Grid item>
-        <img src='/wind_white.png' style={{ width: 240, height: 240 }} />
+        {darkMode ? 
+          <img src='/logo_darkmode.png' style={{ width: 240, height: 240 }} /> : 
+          <img src='/wind_white.png' style={{ width: 240, height: 240 }} /> }
         {/* <Typography sx={{ ...styleTypo }}>
           The wind
         </Typography> */}

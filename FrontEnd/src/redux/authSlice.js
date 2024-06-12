@@ -59,9 +59,36 @@ const authSlice = createSlice({
             state.login.isFetching = false;
             state.login.error = true;
         },
+
+        // UPDATE PROFILE
+        updateProfileSuccess: (state, action) => {
+            state.login.currentUser = {
+                ...state.login.currentUser,
+                user: {
+                    ...state.login.currentUser.user,
+                    ...action.payload
+                }
+            };
+        },
+
+        // REFRESH TOKEN
+        refreshAccessToken: (state, action) => {
+            state.login.currentUser.accessToken = action.payload;
+        },
     }
 });
 
-export const { registerStart, registerSuccess, registerFailed, loginStart, loginSuccess, loginFailed, logOutStart, logOutSuccess, logOutFailed } = authSlice.actions;
+export const { 
+    registerStart, 
+    registerSuccess,
+    registerFailed, 
+    loginStart, 
+    loginSuccess, 
+    loginFailed, 
+    logOutStart, 
+    logOutSuccess, 
+    logOutFailed, 
+    updateProfileSuccess,
+} = authSlice.actions;
 
 export default authSlice.reducer

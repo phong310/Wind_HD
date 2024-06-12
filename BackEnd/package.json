@@ -1,4 +1,5 @@
 {
+  "main": "Server.js",
   "scripts": {
     "start": "nodemon Server.js"
   },
