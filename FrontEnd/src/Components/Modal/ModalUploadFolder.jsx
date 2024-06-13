@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, getImgFolder }) {
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [preview, setPreview] = useState(null);

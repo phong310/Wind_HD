@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import { logOutFailed, logOutStart, logOutSuccess, loginFailed, loginStart, loginSuccess, refreshAccessToken, registerFailed, registerStart, registerSuccess } from "../redux/authSlice"
 
-const baseURL = import.meta.env.VITE_API_LOCAL;
+const baseURL = import.meta.env.VITE_API_PRODUCTS;
 
 // REGISTER
 export const RegisterUser = async (newUser, dispatch, navigate) => {

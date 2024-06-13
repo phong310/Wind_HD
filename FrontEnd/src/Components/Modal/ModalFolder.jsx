@@ -7,7 +7,7 @@ import ModalMoveImg from './ModalMoveImg';
 import ModalDelete from './ModalDelete';
 
 export default function ModalFolder({ open, setOpen, imgId, getAll, getImgFolder }) {
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [openChooseFolder, setOpenChooseFolder] = useState(false)

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, isImg, setIsImg, getImgFolder }) {
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [isLoading, setIsLoading] = useState(false)

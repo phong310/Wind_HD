@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from 'jwt-decode'
 
-const baseURL = import.meta.env.VITE_API_LOCAL;
+const baseURL = import.meta.env.VITE_API_PRODUCTS;
 
 
 const refreshToken = async () => {

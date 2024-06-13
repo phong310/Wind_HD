@@ -11,7 +11,7 @@ const authController = {
         return jwt.sign({
             id: user.id,
         },
-            process.env.JWT_ACCESS_KEY, { expiresIn: "1d" }
+            process.env.JWT_ACCESS_KEY, { expiresIn: "10s" }
         )
     },
 

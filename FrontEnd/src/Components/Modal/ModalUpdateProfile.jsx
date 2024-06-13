@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { updateProfileSuccess } from '../../redux/authSlice';
 
 export default function ModalUpdateProfile({ open, setOpen, darkMode }) {
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [isLoading, setIsLoading] = useState(false)

@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 export default function ModalMoveImg({ open, setOpen, getImgFolder, imgId }) {
     const { id } = useParams();
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [folders, setFolders] = useState()

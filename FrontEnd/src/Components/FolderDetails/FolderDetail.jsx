@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 export default function FolderDetail({ darkMode }) {
     const { id } = useParams();
     const navigate = useNavigate()
-    const baseURL = import.meta.env.VITE_API_LOCAL;
+    const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
     const [folderId, setFolderId] = useState()
