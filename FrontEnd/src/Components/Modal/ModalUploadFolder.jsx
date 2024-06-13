@@ -42,6 +42,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
 
     const handleClose = () => {
         setOpen(false)
+        reset_form()
     }
 
     const handleUpload = async () => {
@@ -63,7 +64,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            toast.success("Upload ảnh thành công")
+            toast.success("Upload photo successfully")
             reset_form()
             setIsLoading(false)
             setOpen(false)

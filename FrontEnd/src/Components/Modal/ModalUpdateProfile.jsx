@@ -68,7 +68,7 @@ export default function ModalUpdateProfile({ open, setOpen, darkMode }) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            toast.success('Profile updated successfully');
+            toast.success(res.data.message);
 
             // Update user state
             const updatedUser = res.data.user;
@@ -79,7 +79,7 @@ export default function ModalUpdateProfile({ open, setOpen, darkMode }) {
             // Update user state or other necessary states
             handleClose();
         } catch (error) {
-            toast.error('Error updating profile');
+            toast.error(res.data.message);
             setIsLoading(false);
         }
     };

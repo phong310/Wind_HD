@@ -89,6 +89,7 @@ export const {
     logOutSuccess, 
     logOutFailed, 
     updateProfileSuccess,
+    refreshAccessToken,
 } = authSlice.actions;
 
 export default authSlice.reducer

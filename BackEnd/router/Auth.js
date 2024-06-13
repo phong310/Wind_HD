@@ -8,7 +8,7 @@ router.post("/register", AuthController.registerUser);
 
 router.post("/login", AuthController.loginUser)
 
-router.post("/logout",AuthController.logoutUser)
+router.post("/logout", middlewareController.verifyToken, AuthController.logoutUser)
 
 router.post('/refresh-token', AuthController.requestRefeshToken)
 

@@ -11,7 +11,7 @@ const authController = {
         return jwt.sign({
             id: user.id,
         },
-            process.env.JWT_ACCESS_KEY, { expiresIn: "10s" }
+            process.env.JWT_ACCESS_KEY, { expiresIn: "1d" }
         )
     },
 
@@ -57,12 +57,12 @@ const authController = {
             });
 
             if (!user) {
-                return res.status(500).json("Wrong username !");
+                return res.status(500).json({ message: "Wrong username !" });
             }
 
             const passwordMatch = await bcrypt.compare(req.body.password, user.password);
             if (!passwordMatch) {
-                return res.status(500).json("Wrong password !");
+                return res.status(500).json({ message: "Wrong password !" });
             }
 
             const accessToken = authController.generateAccessToken(user);
@@ -99,7 +99,6 @@ const authController = {
 
     requestRefeshToken: (req, res) => {
         const refreshToken = req.cookies.refreshToken;
-        console.log(refreshToken);
         if (!refreshToken) return res.status(401).json("You're not authenticated");
 
         if (!refreshTokenArr.includes(refreshToken)) {
