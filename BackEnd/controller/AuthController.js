@@ -75,7 +75,7 @@ const authController = {
             // Lưu refresh token vào cookie
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 path: "/",
                 sameSite: "strict",
             });
@@ -122,7 +122,7 @@ const authController = {
             // lưu refresh token vào cookie
             res.cookie("refreshToken", newRefreshToken, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 path: "/",
                 sameSite: "strict",
             });
