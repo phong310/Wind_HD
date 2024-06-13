@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from 'react-toastify';
-import { logOutFailed, logOutStart, logOutSuccess, loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from "../redux/authSlice"
+import { logOutFailed, logOutStart, logOutSuccess, loginFailed, loginStart, loginSuccess, refreshAccessToken, registerFailed, registerStart, registerSuccess } from "../redux/authSlice"
 
 const baseURL = import.meta.env.VITE_API_LOCAL;
 
@@ -11,11 +11,11 @@ export const RegisterUser = async (newUser, dispatch, navigate) => {
         const res = await axios.post(`${baseURL}auth/register`, newUser);
         dispatch(registerSuccess(res.data));
         navigate("/login");
-        toast.success("Đăng ký tài khoản thành công")
+        toast.success("Account registration successful")
 
     } catch (e) {
         dispatch(registerFailed());
-        toast.error("Đăng ký không thành công !")
+        toast.error("Account registration failed !")
     }
 }
 
@@ -23,30 +23,37 @@ export const RegisterUser = async (newUser, dispatch, navigate) => {
 export const LoginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart())
     try {
-        const res = await axios.post(`${baseURL}auth/login`, user);
+        const res = await axios.post(`${baseURL}auth/login`, user,
+            { withCredentials: true }
+        );
         dispatch(loginSuccess(res.data));
+        console.log(res);
         navigate("/");
-        toast.success("Đăng nhập thành công !")
+        toast.success("Logged in successfully")
 
     } catch (e) {
         dispatch(loginFailed());
-        toast.error("Đăng nhập không thành công")
+        if (e.response && e.response.data && e.response.data.message) {
+            toast.error(e.response.data.message);
+        } else {
+            toast.error("Login failed !");
+        }
     }
 }
 
 // LOGOUT 
-export const LogoutUser = async (id, dispatch, navigate, accessToken) => {
+export const LogoutUser = async (id, dispatch, navigate, accessToken, axiosJWT) => {
     dispatch(logOutStart());
     try {
-        await axios.post(`${baseURL}auth/logout`, id, {
-            headers: { token: `Bearer ${accessToken}` }
+        await axiosJWT.post(`${baseURL}auth/logout`, id, {
+            headers: { token: `Bearer ${accessToken}` },
         })
         dispatch(logOutSuccess());
         navigate("/login")
-        toast.success("Đăng xuất thành công")
+        toast.success("Logout successfully")
 
     } catch (e) {
         dispatch(logOutFailed());
-        toast.error("Đăng xuất không thành công")
+        toast.error("Logout failed !")
     }
 }

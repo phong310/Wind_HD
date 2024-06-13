@@ -56,7 +56,7 @@ export default function UploadImg({ darkMode }) {
           'Content-Type': 'multipart/form-data',
         },
       });
-      toast.success("Upload ảnh thành công")
+      toast.success("Upload photo successfully")
       reset_form()
       setIsLoading(false)
     } catch (error) {

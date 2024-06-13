@@ -4,9 +4,9 @@ import jwt_decode from 'jwt-decode'
 const baseURL = import.meta.env.VITE_API_LOCAL;
 
 
-const refreshToken = async (rftoken) => {
+const refreshToken = async () => {
     try {
-        const res = await axios.post(`${baseURL}auth/refresh-token`, {
+        const res = await axios.post(`${baseURL}auth/refresh-token`, {} ,{
             withCredentials: true
         });
         return res.data;
@@ -25,7 +25,7 @@ export const createAxios = (user, dispatch, stateSuccess) => {
             let date = new Date();
             const decodedToken = jwt_decode(user?.accessToken);
             if (decodedToken.exp < date.getTime() / 1000) {
-                const data = await refreshToken(user?.refreshToken);
+                const data = await refreshToken();
                 const refreshUser = {
                     ...user,
                     accessToken: data.accessToken,

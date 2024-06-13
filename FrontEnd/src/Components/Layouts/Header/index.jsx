@@ -33,14 +33,14 @@ export default function Header({ darkMode, toggleDarkMode }) {
     };
 
     const handleLogout = () => {
-        LogoutUser(id, dispatch, navigate, accessToken)
+        LogoutUser(id, dispatch, navigate, accessToken, axiosJWT)
     }
 
     const handleProfile = () => {
         if (user) {
             navigate('/profile')
         } else {
-            toast.warn('Bạn cần đăng nhập trước')
+            toast.warn('You need to log in first !')
         }
     }
 
@@ -55,10 +55,14 @@ export default function Header({ darkMode, toggleDarkMode }) {
         <Box sx={{ ...boxContainer, backgroundColor: darkMode ? '#696969' : '#D9D9D9' }}>
             <Grid container alignItems={'center'} justifyContent={'space-between'}>
                 <Grid item>
-                    <Grid display={'flex'} alignItems={'center'} gap={2}>
-                        {/* <img src={Logo} /> */}
+                    <Grid
+                        display={'flex'}
+                        alignItems={'center'}
+                        gap={2}
+                        onClick={() => navigate('/')}
+                        sx={{ ...logo }}
+                    >
                         <img src='/logo_cut.png' style={{ width: 40, height: 40 }} />
-
                         <Typography sx={{ ...styleTitle, color: darkMode ? 'white' : 'black' }}> WINDSAVE</Typography>
                     </Grid>
                 </Grid>
@@ -187,4 +191,10 @@ const btnLogin = {
 const activeStyle = {
     textDecoration: 'underline',
     textDecorationThickness: '2px',
+}
+
+const logo = {
+    '&:hover': {
+        cursor: 'pointer'
+    },
 }
