@@ -78,6 +78,7 @@ const authController = {
                 secure: true,
                 path: "/",
                 sameSite: "strict",
+                maxAge: 365 * 24 * 60 * 60 * 1000 
             });
 
             // Trả về phản hồi với access token và refresh token
@@ -102,9 +103,9 @@ const authController = {
         console.log(refreshToken);
         if (!refreshToken) return res.status(401).json("You're not authenticated");
 
-        if (!refreshTokenArr.includes(refreshToken)) {
-            return res.status(403).json("Refresh token is not valid");
-        } 
+        // if (!refreshTokenArr.includes(refreshToken)) {
+        //     return res.status(403).json("Refresh token is not valid");
+        // } 
         // verify refresh token
         jwt.verify(refreshToken, process.env.JWT_REFESH_KEY, (err, user) => {
             if (err) {
@@ -126,6 +127,7 @@ const authController = {
                 secure: true,
                 path: "/",
                 sameSite: "strict",
+                maxAge: 365 * 24 * 60 * 60 * 1000 
             });
 
             res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
