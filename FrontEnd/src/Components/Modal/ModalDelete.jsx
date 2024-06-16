@@ -6,7 +6,16 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, isImg, setIsImg, getImgFolder }) {
+export default function ModalDelete({
+    open,
+    setOpen,
+    folderId,
+    imgId,
+    isImg,
+    setIsImg,
+    getImgFolder,
+    setIsDelFolder,
+}) {
     const baseURL = import.meta.env.VITE_API_PRODUCTS;
     const user = useSelector((state) => state.auth.login?.currentUser)
     const userId = user?.user?._id
@@ -28,13 +37,12 @@ export default function ModalDelete({ open, setOpen, getAll, folderId, imgId, is
             toast.success('Delete success')
             setIsLoading(false)
             setOpen(false)
-            setIsImg(false)
-            getAll()
-            imgId && isImg && getImgFolder()
+            setIsImg && setIsImg(false)
+            imgId && isImg ? getImgFolder() : setIsDelFolder(true)
         } catch (e) {
             console.log('Err:', e);
             setIsLoading(false)
-            toast.warn('Failed!')
+            // toast.warn('Failed!')
         }
     }
 

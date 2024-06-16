@@ -23,6 +23,7 @@ export default function Profile({ darkMode }) {
     const [folderId, setFolderId] = useState()
     const [itemData, setItemData] = useState()
     const [isEdit, setIsEdit] = useState(false)
+    const [isDelFolder, setIsDelFolder] = useState(true)
     const [openUpdatePrf, setOpenUpdatePrf] = useState()
 
     const getAllFolders = async () => {
@@ -37,6 +38,7 @@ export default function Profile({ darkMode }) {
     const handelOpenDel = (id) => {
         setOpenDel(true)
         setFolderId(id)
+        setIsDelFolder(false)
     }
 
     const handleOpenUpdate = (item) => {
@@ -51,9 +53,10 @@ export default function Profile({ darkMode }) {
     }
 
     useEffect(() => {
-        getAllFolders()
-    }, [])
-
+        if (isDelFolder) {
+            getAllFolders()
+        }
+    }, [isDelFolder])
 
     return (
         <Box sx={{ mb: 60, pt: 13, }}>
@@ -138,13 +141,13 @@ export default function Profile({ darkMode }) {
             <ModalDelete
                 open={openDel}
                 setOpen={setOpenDel}
-                getAll={getAllFolders}
                 folderId={folderId}
+                setIsDelFolder={setIsDelFolder}
             />
 
-            <ModalUpdateProfile 
-                open={openUpdatePrf} 
-                setOpen={setOpenUpdatePrf} 
+            <ModalUpdateProfile
+                open={openUpdatePrf}
+                setOpen={setOpenUpdatePrf}
                 darkMode={darkMode}
             />
         </Box>

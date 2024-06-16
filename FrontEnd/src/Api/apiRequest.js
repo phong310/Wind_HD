@@ -31,7 +31,6 @@ export const LoginUser = async (user, dispatch, navigate) => {
         toast.success("Logged in successfully")
 
     } catch (e) {
-        console.log(e);
         dispatch(loginFailed());
         if (e.response && e.response.data && e.response.data.message) {
             toast.error(e.response.data.message);
