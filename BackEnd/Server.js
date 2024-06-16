@@ -13,7 +13,7 @@ dotenv.config()
 const app = express()
 
 app.use(cors({
-    origin: 'https://wind-storage.netlify.app',
+    origin: 'https://wind-storage.netlify.app/',
     credentials: true,
 }));
 
