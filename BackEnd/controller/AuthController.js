@@ -75,7 +75,7 @@ const authController = {
             // Lưu refresh token vào cookie
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
@@ -124,7 +124,7 @@ const authController = {
             // lưu refresh token vào cookie
             res.cookie("refreshToken", newRefreshToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
