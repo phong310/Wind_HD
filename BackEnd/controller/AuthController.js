@@ -78,7 +78,8 @@ const authController = {
                 secure: true,
                 path: "/",
                 sameSite: "strict",
-                maxAge: 365 * 24 * 60 * 60 * 1000 
+                maxAge: 365 * 24 * 60 * 60 * 1000,
+                domain: "https://wind-hd.onrender.com" 
             });
 
             // Trả về phản hồi với access token và refresh token
@@ -127,7 +128,8 @@ const authController = {
                 secure: true,
                 path: "/",
                 sameSite: "strict",
-                maxAge: 365 * 24 * 60 * 60 * 1000 
+                maxAge: 365 * 24 * 60 * 60 * 1000,
+                domain: "https://wind-hd.onrender.com" 
             });
 
             res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
