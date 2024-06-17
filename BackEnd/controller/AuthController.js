@@ -20,7 +20,7 @@ const authController = {
             {
                 id: user.id,
             },
-            process.env.JWT_REFESH_KEY, { expiresIn: "365d" }
+            process.env.JWT_REFRESH_KEY, { expiresIn: "365d" }
         )
     },
 
@@ -32,7 +32,7 @@ const authController = {
             const hashConfirmPass = await bcrypt.hash(req.body.confirm, salt)
 
             // create new
-            const newUser = await new UsersModel({
+            const newUser = new UsersModel({
                 username: req.body.username,
                 avatar: "",
                 cover_img: "",
@@ -79,7 +79,7 @@ const authController = {
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
-                domain: "https://wind-hd.onrender.com" 
+                domain: ".onrender.com" 
             });
 
             // Trả về phản hồi với access token và refresh token
@@ -108,7 +108,7 @@ const authController = {
         //     return res.status(403).json("Refresh token is not valid");
         // } 
         // verify refresh token
-        jwt.verify(refreshToken, process.env.JWT_REFESH_KEY, (err, user) => {
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
             if (err) {
                 console.log(err);
                 return res.status(403).json("Refresh token is not valid");
@@ -129,7 +129,7 @@ const authController = {
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
-                domain: "https://wind-hd.onrender.com" 
+                domain: ".onrender.com" 
             });
 
             res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
