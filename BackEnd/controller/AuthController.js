@@ -79,7 +79,6 @@ const authController = {
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
-                domain: ".onrender.com" 
             });
 
             // Trả về phản hồi với access token và refresh token
@@ -129,7 +128,6 @@ const authController = {
                 path: "/",
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
-                domain: ".onrender.com" 
             });
 
             res.status(200).json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
