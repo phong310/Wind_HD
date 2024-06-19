@@ -112,10 +112,10 @@ export default function Profile({ darkMode }) {
                         >
                             <Grid className='grid_container' item sx={{ ...styleFolder }}>
                                 <Grid className="icon-container" display={'flex'} justifyContent={'center'} gap={2}>
-                                    <IconButton sx={{ ...iconButtonHover }} onClick={() => handleOpenUpdate(item)}>
+                                    <IconButton sx={{ color: darkMode ? 'white' : 'black' }} onClick={() => handleOpenUpdate(item)}>
                                         <EditIcon />
                                     </IconButton>
-                                    <IconButton sx={{ ...iconButtonHover }} onClick={() => handelOpenDel(item?._id)}>
+                                    <IconButton sx={{ color: darkMode ? 'white' : 'black' }} onClick={() => handelOpenDel(item?._id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Grid>
@@ -199,9 +199,4 @@ const styleFolder = {
     '&:hover': {
         cursor: 'pointer'
     },
-}
-
-const iconButtonHover = {
-    // backgroundColor: 'white',
-    color: 'black'
 }

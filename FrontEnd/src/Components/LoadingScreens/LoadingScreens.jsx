@@ -13,7 +13,7 @@ export default function LoadingScreens({ darkMode }) {
                 height: '80vh',
             }}
         >
-            <CircularProgress color="inherit" />
+            <CircularProgress sx={{ color: darkMode ? 'white' : 'black' }} />
         </Box>
     )
 }

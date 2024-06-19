@@ -19,7 +19,7 @@ export default function SearchBar({ onSearch, isFetching }) {
 
     useEffect(() => {
         if (searchTerm === '' && previousSearchTerm.current !== '') {
-            isFetching();
+            isFetching && isFetching();
             onSearch('');
         }
         previousSearchTerm.current = searchTerm;

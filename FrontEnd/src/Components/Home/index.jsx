@@ -31,7 +31,7 @@ export const CssTextField = styled(TextField)({
   },
 });
 
-export default function Home({ darkmode }) {
+export default function Home({ darkMode }) {
   const clientId = process.env.Access_Key
   // const [itemData, setItemData] = useState([])
   // const [searchTag, setSearchTag] = useState([])
@@ -108,7 +108,6 @@ export default function Home({ darkmode }) {
 
 
 
-
   return (
     <Box sx={{ mb: 10, pt: 14 }}>
       <SearchBar onSearch={searchTags} />
@@ -158,7 +157,7 @@ export default function Home({ darkmode }) {
         />
       </Grid>} */}
       {isLoading ? (
-        <LoadingScreens darkmode={darkmode} />
+        <LoadingScreens darkMode={darkMode} />
       ) : (
         <ImageGallery
           photos={searchTag.length > 0 ? searchTag : itemData}
