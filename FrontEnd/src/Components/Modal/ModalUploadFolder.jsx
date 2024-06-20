@@ -51,11 +51,16 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
             return;
         }
         const formData = new FormData();
+        if (!title || !description) {
+            toast.warning("Title and description are required");
+            return;
+        } else {
+            formData.append('title', title);
+            formData.append('description', description);
+        }
         formData.append('file', file);
-        formData.append('title', title);
         formData.append('userId', userId);
         formData.append('folder', folderId);
-        formData.append('description', description);
         setIsLoading(true)
 
         try {
@@ -70,8 +75,11 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
             setOpen(false)
             getImgFolder()
         } catch (error) {
-            console.error('Error uploading the file:', error);
-            toast.warning("Failed to upload file. Please try again.")
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.warning(error.response.data.message);
+            } else {
+                toast.warning("Failed to upload file. Please try again.")
+            }
             setIsLoading(false)
         }
     };
@@ -101,7 +109,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                             <CssTextField
                                 fullWidth
                                 size='small'
-                                label="Title"
+                                label={<><span>Title</span><span style={{ color: 'red' }}> *</span></>}
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
@@ -113,7 +121,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                                 maxRows={4}
                                 fullWidth
                                 size='small'
-                                label="Description"
+                                label={<><span>Description</span><span style={{ color: 'red' }}> *</span></>}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
