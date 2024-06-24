@@ -1,4 +1,5 @@
 const ImageModel = require('../models/ImagesModel');
+const UsersModel = require('../models/UsersModel');
 const cloudinary = require('cloudinary').v2;
 
 const ImagesController = {
@@ -107,6 +108,49 @@ const ImagesController = {
             res.status(200).json({ message: 'Image deleted successfully' });
         } catch (error) {
             res.status(500).json({ message: 'Error deleting image', error });
+        }
+    },
+
+    // update avatar
+    setAvatar: async (req, res) => {
+        const { userId } = req.params;
+        const { url } = req.body;
+
+        try {
+            // Tìm người dùng
+            const user = await UsersModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            // Cập nhật avatar
+            user.avatar = url;
+            await user.save();
+
+            res.status(200).json({ message: 'Avatar updated successfully', user });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating avatar', error });
+        }
+    },
+
+    // update cover img
+    setCover: async (req, res) => {
+        const { userId } = req.params;
+        const { url } = req.body;
+
+        try {
+            const user = await UsersModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            // Cập nhật ảnh bìa
+            user.cover_img = url;
+            await user.save();
+
+            res.status(200).json({ message: 'Cover image updated successfully', user });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating cover image', error });
         }
     },
 

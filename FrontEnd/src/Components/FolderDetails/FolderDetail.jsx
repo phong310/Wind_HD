@@ -27,6 +27,7 @@ export default function FolderDetail({ darkMode }) {
     const [openModalOp, setOpenModalOp] = useState(false)
     const [openUploadFolder, setOpenUploadFolder] = useState(false)
     const [ImgId, setImgId] = useState()
+    const [urlImg, setUrlImg] = useState()
     const [filteredImages, setFilteredImages] = useState([]);
 
     const getAllImg = async () => {
@@ -59,9 +60,10 @@ export default function FolderDetail({ darkMode }) {
         }
     }
 
-    const openModalChooseFolder = (id) => {
+    const openModalChooseFolder = (id, url) => {
         setOpenModalOp(true)
         setImgId(id)
+        setUrlImg(url)
     }
 
     const handleOpenUploadImg = () => {
@@ -144,7 +146,7 @@ export default function FolderDetail({ darkMode }) {
                                         <div className="overlay"></div>
                                         <Grid className="icon-all" container justifyContent={'center'}>
                                             <Grid item>
-                                                <IconButton onClick={() => openModalChooseFolder(item?._id)}>
+                                                <IconButton onClick={() => openModalChooseFolder(item?._id, item?.url)}>
                                                     <SettingsIcon />
                                                 </IconButton>
                                             </Grid>
@@ -176,7 +178,7 @@ export default function FolderDetail({ darkMode }) {
                                             <div className="overlay"></div>
                                             <Grid className="icon-all" container justifyContent={'center'}>
                                                 <Grid item>
-                                                    <IconButton onClick={() => openModalChooseFolder(item?._id)}>
+                                                    <IconButton onClick={() => openModalChooseFolder(item?._id, item?.url)}>
                                                         <SettingsIcon />
                                                     </IconButton>
                                                 </Grid>
@@ -193,6 +195,7 @@ export default function FolderDetail({ darkMode }) {
                 open={openModalOp}
                 setOpen={setOpenModalOp}
                 imgId={ImgId}
+                urlImg={urlImg}
                 getAll={getAllImg}
                 getImgFolder={getImgFolder}
             />

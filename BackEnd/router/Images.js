@@ -14,6 +14,10 @@ router.delete('/img/:imageId', ImagesController.deleteImage);
 // chuyển ảnh
 router.put('/moveImage', ImagesController.moveImage);
 
+router.put('/:userId/avatar', ImagesController.setAvatar);
+
+router.put('/:userId/cover', ImagesController.setCover);
+
 router.get('/search/:title/:folderId?', ImagesController.searchImagesByTitleInFolder);
 
 module.exports = router;
