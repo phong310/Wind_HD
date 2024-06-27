@@ -1,17 +1,18 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Divider, Grid, IconButton, ImageList, ImageListItem, Typography } from '@mui/material';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import SearchBar from '../SearchBar/SearchBar';
-import '../CSS/FolderDetail.css';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ModalFolder from '../Modal/ModalFolder';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import ModalUploadFolder from '../Modal/ModalUploadFolder';
 import { toast } from 'react-toastify';
+import { useGetColumns } from '../../Hook/useGetColums';
+import '../CSS/FolderDetail.css';
+import ModalFolder from '../Modal/ModalFolder';
+import ModalUploadFolder from '../Modal/ModalUploadFolder';
+import SearchBar from '../SearchBar/SearchBar';
 
 
 export default function FolderDetail({ darkMode }) {
@@ -29,6 +30,8 @@ export default function FolderDetail({ darkMode }) {
     const [ImgId, setImgId] = useState()
     const [urlImg, setUrlImg] = useState()
     const [filteredImages, setFilteredImages] = useState([]);
+
+    const getColumns = useGetColumns();
 
     const getAllImg = async () => {
         try {
@@ -102,8 +105,8 @@ export default function FolderDetail({ darkMode }) {
     }, [id])
 
     return (
-        <Box sx={{ mb: 60, pt: 18 }}>
-            <Grid container justifyContent={'space-between'} alignItems={'center'} sx={{ px: 20 }}>
+        <Box sx={{ mb: 60, pt: 18, overflowX: 'hidden' }}>
+            <Grid container justifyContent={'space-between'} alignItems={'center'} sx={{ px: {xs: 8, sm: 10, md: 20} }}>
                 <Grid item>
                     <IconButton onClick={() => navigate('/profile')}>
                         <ArrowBackIcon />
@@ -126,41 +129,10 @@ export default function FolderDetail({ darkMode }) {
                 isFetching={id != 'all' ? getImgFolder : getAllImg}
             />
             <Grid container justifyContent={'center'}>
-                {filteredImages?.length > 0 ? <Grid item>
-                    <ImageList variant="masonry" cols={4} gap={8}>
-                        {filteredImages?.map((item, idx) => (
-                            <ImageListItem key={idx} sx={{ ...styleImgZoom }}>
-                                <motion.div
-                                    animate={{ x: 0 }}
-                                    transition={{ type: 'tween', duration: 0.5 }}
-                                    whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-                                // whileTap={{ scale: 0.6 }}
-                                >
-                                    <div className='div-container'>
-                                        <img
-                                            srcSet={item.url}
-                                            src={item.url}
-                                            loading="lazy"
-                                            style={{ width: 400 }}
-                                        />
-                                        <div className="overlay"></div>
-                                        <Grid className="icon-all" container justifyContent={'center'}>
-                                            <Grid item>
-                                                <IconButton onClick={() => openModalChooseFolder(item?._id, item?.url)}>
-                                                    <SettingsIcon />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                    </div>
-
-                                </motion.div>
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
-                </Grid> : imagesToDisplay?.length > 0 ?
+                {filteredImages?.length > 0 ?
                     <Grid item>
-                        <ImageList variant="masonry" cols={4} gap={8}>
-                            {imagesToDisplay?.map((item, idx) => (
+                        <ImageList variant="masonry" cols={getColumns()} gap={8}>
+                            {filteredImages?.map((item, idx) => (
                                 <ImageListItem key={idx} sx={{ ...styleImgZoom }}>
                                     <motion.div
                                         animate={{ x: 0 }}
@@ -189,7 +161,39 @@ export default function FolderDetail({ darkMode }) {
                                 </ImageListItem>
                             ))}
                         </ImageList>
-                    </Grid> : <Typography variant='h4' sx={{ mt: 20, color: 'gray' }}>The folder is empty !</Typography>}
+                    </Grid> : imagesToDisplay?.length > 0 ?
+                        <Grid item>
+                            <ImageList variant="masonry" cols={getColumns()} gap={8}>
+                                {imagesToDisplay?.map((item, idx) => (
+                                    <ImageListItem key={idx} sx={{ ...styleImgZoom }}>
+                                        <motion.div
+                                            animate={{ x: 0 }}
+                                            transition={{ type: 'tween', duration: 0.5 }}
+                                            whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+                                        // whileTap={{ scale: 0.6 }}
+                                        >
+                                            <div className='div-container'>
+                                                <img
+                                                    srcSet={item.url}
+                                                    src={item.url}
+                                                    loading="lazy"
+                                                    style={{ width: 400 }}
+                                                />
+                                                <div className="overlay"></div>
+                                                <Grid className="icon-all" container justifyContent={'center'}>
+                                                    <Grid item>
+                                                        <IconButton onClick={() => openModalChooseFolder(item?._id, item?.url)}>
+                                                            <SettingsIcon />
+                                                        </IconButton>
+                                                    </Grid>
+                                                </Grid>
+                                            </div>
+
+                                        </motion.div>
+                                    </ImageListItem>
+                                ))}
+                            </ImageList>
+                        </Grid> : <Typography variant='h4' sx={{ mt: 20, color: 'gray' }}>The folder is empty !</Typography>}
             </Grid>
             <ModalFolder
                 open={openModalOp}

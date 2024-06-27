@@ -31,7 +31,7 @@ export default function Login({ darkMode }) {
       password: password
     }
     setIsLoading(true)
-    setTimeout(()=>{
+    setTimeout(() => {
       LoginUser(newUser, dispatch, navigate)
       setIsLoading(false)
     }, 800)
@@ -40,11 +40,11 @@ export default function Login({ darkMode }) {
   return (
     <Box sx={{ mb: 20, pt: 14 }}>
       <Typography variant='h5' sx={{ ...styleTypoTitle, color: darkMode ? 'white' : 'black' }}>LOGIN</Typography>
-      <Grid container justifyContent={'center'} alignContent={'center'} sx={{ px: 80 }} gap={4}>
-        <Grid item sm={12}>
+      <Grid container justifyContent={'center'} alignContent={'center'} sx={{ px: { xs: 2, sm: 10, md: 20, lg: 40, xl: 80 } }} gap={4}>
+        <Grid item xs={12}>
           <CssTextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </Grid>
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <PasswordFormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
@@ -69,7 +69,7 @@ export default function Login({ darkMode }) {
           </PasswordFormControl>
         </Grid>
         <LoadingButton loading={isLoading} variant="contained" sx={{ ...btnUpload }} onClick={handleLogin}>Login</LoadingButton>
-        <Grid item sm={12} sx={{ textAlign: 'center' }}>
+        <Grid item xs={12} sx={{ textAlign: 'center' }}>
           <Typography sx={{ ...styleTypo, color: darkMode ? 'white' : 'black' }}>No account? <span style={styleRegister} onClick={() => navigate('/register')}>Register</span></Typography>
         </Grid>
       </Grid>

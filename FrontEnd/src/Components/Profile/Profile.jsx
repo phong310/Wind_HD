@@ -63,7 +63,7 @@ export default function Profile({ darkMode }) {
             <Grid sx={{ position: 'relative' }}>
                 <img src={user?.user.cover_img ? user?.user.cover_img : '/coverImg_default.jpg'} style={styleImgCover} />
                 <div className='div-container'>
-                    <Box sx={styleAvatarContainer}>
+                    <Box sx={{ ...styleAvatarContainer, left: { xs: '50%', sm: '50%', md: '10%' } }}>
                         <img src={user?.user.avatar ? user?.user.avatar : '/defaul_avatar.png'} alt='Avatar' style={styleAvatar} />
                         <div className="overlay"></div>
                         <Grid className="icon-all" container justifyContent={'center'}>
@@ -75,9 +75,8 @@ export default function Profile({ darkMode }) {
                         </Grid>
                     </Box>
                 </div>
-
             </Grid>
-            <Grid container justifyContent={'flex-end'} sx={{ p: 6 }}>
+            <Grid container justifyContent={{ xs: 'center', md: 'flex-end' }} sx={{ p: 6, mt: { xs: 12, md: 'unset' } }}>
                 <Button
                     variant="contained"
                     startIcon={<AddCircleOutlineIcon />}
@@ -165,7 +164,6 @@ const styleAvatarContainer = {
     bgcolor: 'white',
     position: 'absolute',
     bottom: -110,
-    left: '10%',
     transform: 'translateX(-50%)',
     width: 240,
     height: 240,
