@@ -94,7 +94,7 @@ export default function ModalCommon({ open, setOpen, getAll, data, isEdit, setIs
                         <CssTextField
                             fullWidth
                             label='Name'
-                            sx={{ width: 400 }}
+                            sx={{ width: { xs: '100%', sm: 400 } }}
                             value={folderName}
                             onChange={handleChange}
                             error={!!error}

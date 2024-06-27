@@ -105,7 +105,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                 </AppBar>
                 <DialogContent>
                     <Grid container justifyContent={'center'} alignContent={'center'} sx={{ p: 2 }} gap={4}>
-                        <Grid item sm={12}>
+                        <Grid item xs={12}>
                             <CssTextField
                                 fullWidth
                                 size='small'
@@ -114,7 +114,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item xs={12}>
                             <CssTextField
                                 multiline
                                 rows={4}
@@ -126,7 +126,7 @@ export default function ModalUploadFolder({ open, setOpen, darkMode, folderId, g
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Grid>
-                        <Grid item sm={12} sx={{ ...styleUpload }}>
+                        <Grid item xs={12} sx={{ ...styleUpload }}>
                             <Grid textAlign={'center'}>
                                 <IconButton>
                                     <label htmlFor="file-upload">

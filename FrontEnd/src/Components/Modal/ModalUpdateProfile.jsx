@@ -104,7 +104,7 @@ export default function ModalUpdateProfile({ open, setOpen, darkMode }) {
                     </Toolbar>
                 </AppBar>
                 <DialogContent>
-                    <Box sx={{ p: 5, minWidth: 600 }}>
+                    <Box sx={{ p: 5}}>
                         <Typography variant='h5' sx={{ textAlign: 'center', mb: 2 }}>Upload avatar</Typography>
                         <Grid item sm={12} sx={{ ...styleUpload }}>
                             <Grid textAlign={'center'}>
