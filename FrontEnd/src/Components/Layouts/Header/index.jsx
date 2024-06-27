@@ -11,6 +11,25 @@ import { LogoutUser } from '../../../Api/apiRequest';
 import { toast } from 'react-toastify';
 import { createAxios } from '../../interceptor';
 import { logOutSuccess } from '../../../redux/authSlice';
+import { HeaderMobile } from '../HeaderMobile';
+
+const menuList = [
+    {
+        title: 'HOME',
+        path: '/',
+        secure: false
+    },
+    {
+        title: 'UPLOAD',
+        path: '/upload',
+        secure: false
+    },
+    {
+        title: 'PROFILE',
+        path: '/profile',
+        secure: true
+    }
+]
 
 export default function Header({ darkMode, toggleDarkMode }) {
     const location = useLocation();
@@ -22,6 +41,11 @@ export default function Header({ darkMode, toggleDarkMode }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     let axiosJWT = createAxios(user, dispatch, logOutSuccess)
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    const handleDrawerToggle = () => {
+        setIsDrawerOpen(!isDrawerOpen);
+    };
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -36,9 +60,9 @@ export default function Header({ darkMode, toggleDarkMode }) {
         LogoutUser(id, dispatch, navigate, accessToken, axiosJWT)
     }
 
-    const handleProfile = () => {
-        if (user) {
-            navigate('/profile')
+    const handleNavigate = (path, secure) => {
+        if (!secure || user) {
+            navigate(path)
         } else {
             toast.warn('You need to log in first !')
         }
@@ -50,10 +74,14 @@ export default function Header({ darkMode, toggleDarkMode }) {
         }
     }, [user])
 
-
     return (
         <Box sx={{ ...boxContainer, backgroundColor: darkMode ? '#696969' : '#D9D9D9' }}>
-            <Grid container alignItems={'center'} justifyContent={'space-between'}>
+            <Grid 
+                container 
+                alignItems={'center'} 
+                justifyContent={'space-between'} 
+                sx={{ display: { xs: 'none', sm: 'none', md: 'flex', } }}
+            >
                 <Grid item>
                     <Grid
                         display={'flex'}
@@ -67,52 +95,30 @@ export default function Header({ darkMode, toggleDarkMode }) {
                     </Grid>
                 </Grid>
                 <Grid item>
-                    <Grid container alignItems={'center'} justifyContent={'center'} gap={6}>
+                    <Grid container alignItems={'center'} justifyContent={'center'}>
                         <Grid item>
-                            <Button
-                                sx={path === '/'
-                                    ?
-                                    {
-                                        ...styleMenuButtonMain, ...activeStyle, color: darkMode
-                                            ? 'white' : 'black', textDecorationColor: darkMode
-                                                ? 'white' : 'black',
-                                    }
-                                    : { ...styleMenuButtonMain, color: darkMode ? 'white' : 'black' }}
-                                onClick={() => navigate('/')}>
-                                HOME
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                sx={path === '/upload'
-                                    ?
-                                    {
-                                        ...styleMenuButtonMain, ...activeStyle, color: darkMode
-                                            ? 'white' : 'black', textDecorationColor: darkMode
-                                                ? 'white' : 'black'
-                                    }
-                                    : { ...styleMenuButtonMain, color: darkMode ? 'white' : 'black' }}
-                                onClick={() => navigate('/upload')}>
-                                UPLOAD
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                sx={path === '/profile'
-                                    ?
-                                    {
-                                        ...styleMenuButtonMain, ...activeStyle, color: darkMode
-                                            ? 'white' : 'black', textDecorationColor: darkMode
-                                                ? 'white' : 'black'
-                                    }
-                                    : { ...styleMenuButtonMain, color: darkMode ? 'white' : 'black' }}
-                                onClick={handleProfile}>
-                                PROFILE
-                            </Button>
+                            {menuList.map((item, idx) => {
+                                return (
+                                    <Button
+                                        key={idx}
+                                        sx={path === `${item.path}`
+                                            ?
+                                            {
+                                                ...styleMenuButtonMain, ...activeStyle, color: darkMode
+                                                    ? 'white' : 'black', textDecorationColor: darkMode
+                                                        ? 'white' : 'black',
+                                            }
+                                            : { ...styleMenuButtonMain, color: darkMode ? 'white' : 'black' }}
+                                        onClick={() => handleNavigate(item.path, item.secure)}>
+                                        {item.title}
+                                    </Button>
+                                )
+                            })}
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item display={'flex'} justifyContent={'center'} gap={2}>
+
+                <Grid item justifyContent={'center'} gap={2}>
                     {user ?
                         <>
                             <Button
@@ -149,7 +155,18 @@ export default function Header({ darkMode, toggleDarkMode }) {
                         {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
                     </IconButton>
                 </Grid>
+
             </Grid>
+            <HeaderMobile 
+                user={user}
+                handleNavigate={handleNavigate}
+                handleLogout={handleLogout}
+                toggleDarkMode={toggleDarkMode}
+                darkMode={darkMode}
+                menuList={menuList} 
+                handleDrawerToggle={handleDrawerToggle} 
+                isDrawerOpen={isDrawerOpen} 
+            />
         </Box>
     )
 }
@@ -167,7 +184,8 @@ const styleMenuButtonMain = {
     fontSize: 18,
     fontWeight: 400,
     color: 'black',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    mx: 4
 }
 
 const styleTitle = {

@@ -6,21 +6,18 @@ import React from 'react'
 
 export default function Footer({ darkMode }) {
   return (
-    <Grid container alignItems={'center'} justifyContent={'space-between'} sx={{ p: 4 }}>
+    <Grid container alignItems={'center'} justifyContent={{ xs: 'center', md: 'space-between' }} sx={{ p: 4 }}>
       <Grid item>
         {darkMode ? 
           <img src='/logo_darkmode.png' style={{ width: 240, height: 240 }} /> : 
           <img src='/wind_white.png' style={{ width: 240, height: 240 }} /> }
-        {/* <Typography sx={{ ...styleTypo }}>
-          The wind
-        </Typography> */}
       </Grid>
       <Grid item>
-        <Grid display={'flex'} alignContent={'center'} gap={1} sx={{ mb: 2 }} justifyContent={'flex-end'}>
-          <IconButton>
+        <Grid display={'flex'} alignContent={'center'} gap={1} sx={{ mb: 2 }} justifyContent={{ xs: 'center', md: 'flex-end' }}>
+          <IconButton component="a" href="https://www.instagram.com/_thewiind/?hl=vi" target="_blank" rel="noopener noreferrer">
             <img src={instagram} />
           </IconButton>
-          <IconButton>
+          <IconButton component="a" href="https://www.facebook.com/dinhphong.pham.310" target="_blank" rel="noopener noreferrer">
             <img src={facebook} />
           </IconButton>
         </Grid>

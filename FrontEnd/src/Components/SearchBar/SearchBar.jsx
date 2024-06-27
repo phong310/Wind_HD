@@ -27,7 +27,7 @@ export default function SearchBar({ onSearch, isFetching }) {
 
     return (
         <Grid container justifyContent={'center'} sx={{ my: 4 }} gap={1}>
-            <Grid item sm={4}>
+            <Grid item  xs={8} md={4}>
                 <CssTextField
                     fullWidth
                     value={searchTerm}

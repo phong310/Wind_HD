@@ -77,8 +77,8 @@ export default function UploadImg({ darkMode }) {
   return (
     <Box sx={{ mb: 8, pt: 14 }}>
       <Typography variant='h5' sx={{ ...styleTypoTitle, color: darkMode ? 'white' : 'black' }}>UPLOAD NEW IMAGE</Typography>
-      <Grid container justifyContent={'center'} alignContent={'center'} sx={{ px: 80 }} gap={4}>
-        <Grid item sm={12}>
+      <Grid container justifyContent={'center'} alignContent={'center'} sx={{ px: { xs: 2, sm: 4, md: 8, lg: 40, xl: 70 } }} gap={4}>
+        <Grid item xs={12}>
           <CssTextField
             fullWidth
             size='small'
@@ -87,7 +87,7 @@ export default function UploadImg({ darkMode }) {
             onChange={(e) => setTitle(e.target.value)}
           />
         </Grid>
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <CssTextField
             multiline
             rows={4}
@@ -99,7 +99,7 @@ export default function UploadImg({ darkMode }) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </Grid>
-        <Grid item sm={12} sx={{ ...styleUpload }}>
+        <Grid item xs={12} sx={{ ...styleUpload }}>
           <Grid textAlign={'center'}>
             <IconButton>
               <label htmlFor="file-upload">
@@ -116,15 +116,17 @@ export default function UploadImg({ darkMode }) {
             <Typography sx={{ mt: 1, fontSize: 14, color: '#9E9B9B' }}>image should not exceed 5mb</Typography>
           </Grid>
         </Grid>
-        <LoadingButton
-          loading={isLoading}
-          variant="contained"
-          endIcon={<FileUploadIcon />}
-          sx={{ ...btnUpload }}
-          onClick={handleUpload}
-        >
-          Upload
-        </LoadingButton>
+        <Grid item>
+          <LoadingButton
+            loading={isLoading}
+            variant="contained"
+            endIcon={<FileUploadIcon />}
+            sx={{ ...btnUpload }}
+            onClick={handleUpload}
+          >
+            Upload
+          </LoadingButton>
+        </Grid>
       </Grid>
     </Box>
   );
